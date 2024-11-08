@@ -6,7 +6,9 @@ import TopPage from '../_components/custom-fields/top-page'
 
 import { getPage } from '../_libs/microcms'
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+	params,
+}: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
 
 	const contentId = slug[slug.length - 1]
