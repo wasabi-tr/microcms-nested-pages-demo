@@ -1,3 +1,4 @@
+export const dynamic = true
 import type { Page } from '@/app/_types'
 import { createClient, type MicroCMSQueries } from 'microcms-js-sdk'
 
