@@ -67,12 +67,14 @@ const LinkList: React.FC<{
 	parentSlug?: string
 	depth?: number
 }> = ({ tree, parentSlug = '', depth = 0 }) => {
+	const indentClass =
+		['ml-0', 'ml-8', 'ml-16', 'ml-20', 'ml-28'][depth] || 'ml-24'
 	return (
 		<ul>
 			{Object.keys(tree).map(key => {
 				const currentSlug = `${parentSlug}/${key}`.replace(/\/+/g, '/') // スラッシュを正規化
 				return (
-					<li key={key} className={`ml-${depth * 4} py-1`}>
+					<li key={key} className={`${indentClass} py-1`}>
 						<Link className='text-blue-500 hover:underline' href={currentSlug}>
 							{key}
 						</Link>

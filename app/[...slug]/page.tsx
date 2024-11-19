@@ -22,22 +22,26 @@ export default async function Page({
 
 	if (!contents) return notFound()
 
-	return contents.layout.map((field, index) => {
-		switch (field.fieldId) {
-			case 'richEditor':
-				return <RichEditor key={index} {...field} />
-			case 'imageTextBlock':
-				return <ImageTextBlock key={index} {...field} />
-			case 'gridCard':
-				return <GridCard key={index} {...field} />
-			case 'topPage':
-				return <TopPage key={index} {...field} />
-			case 'html':
-				return <HTML key={index} {...field} />
-			default:
-				return <div key={index}>Unknown field</div>
-		}
-	})
+	return (
+		<div className='space-y-4 pt-4 pb-12'>
+			{contents.layout.map((field, index) => {
+				switch (field.fieldId) {
+					case 'richEditor':
+						return <RichEditor key={index} {...field} />
+					case 'imageTextBlock':
+						return <ImageTextBlock key={index} {...field} />
+					case 'gridCard':
+						return <GridCard key={index} {...field} />
+					case 'topPage':
+						return <TopPage key={index} {...field} />
+					case 'html':
+						return <HTML key={index} {...field} />
+					default:
+						return <div key={index}>Unknown field</div>
+				}
+			})}
+		</div>
+	)
 }
 
 /**

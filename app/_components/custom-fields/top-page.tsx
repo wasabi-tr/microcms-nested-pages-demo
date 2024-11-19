@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '../ui/button'
+import React from 'react'
 
 const TopPage = ({
 	relation: {
@@ -25,7 +26,14 @@ const TopPage = ({
 							<h1 className='text-4xl md:text-5xl font-bold mb-6'>
 								{mvHeading}
 							</h1>
-							<p className='text-xl mb-8'>{mvLead}</p>
+							<p className='text-xl mb-8'>
+								{mvLead.split('\n').map((line, index) => (
+									<React.Fragment key={index}>
+										{line}
+										<br />
+									</React.Fragment>
+								))}
+							</p>
 							<div className='flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4'>
 								<Button
 									size='lg'
