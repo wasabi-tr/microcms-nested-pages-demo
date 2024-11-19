@@ -1,18 +1,19 @@
 import type { CustomField } from '@/app/_types'
-import Image from 'next/image'
-import { Button } from '../ui/button'
 import { ArrowRight, CheckCircle } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { Button } from '../ui/button'
 
 const TopPage = ({
-	mvImage,
-	mvHeading,
-	mvLead,
-	featureHeading,
-	featureList,
-	caseHeading,
-	caseDescription,
-	caseList,
+	relation: {
+		mvImage,
+		mvHeading,
+		mvLead,
+		featureHeading,
+		featureList,
+		caseHeading,
+		caseList,
+	},
 }: Extract<CustomField, { fieldId: 'topPage' }>) => {
 	return (
 		<div className='min-h-screen flex flex-col bg-gray-50'>

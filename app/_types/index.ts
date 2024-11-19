@@ -16,18 +16,21 @@ export type RichEditor = {
 
 export type TopPage = {
 	fieldId: 'topPage'
-	mvImage: MicroCMSImage // Image URL
-	mvHeading: string
-	mvLead: string
-	featureHeading: string
-	featureList: Array<{
-		fieldId: 'topPageFeatures'
-		title: string
-		body: string
-	}>
-	caseHeading: string
-	caseDescription: string
-	caseList: Case[]
+	relation: {
+		mvImage: MicroCMSImage // Image URL
+		mvHeading: string
+		mvLead: string
+		featureHeading: string
+		featureList: Array<{
+			fieldId: 'topPageFeatures'
+			title: string
+			body: string
+		}>
+		caseHeading: string
+		caseDescription: string
+		caseList: Case[]
+	} & MicroCMSContentId &
+		MicroCMSDate
 }
 
 export type Case = {
@@ -66,9 +69,10 @@ export type CustomField =
 	| GridCard
 
 export type Page = {
+	slug: string
 	title: string
-	body: CustomField[]
-	parentPage: string
+	layout: CustomField[]
+	parent: Page | null
 	description: string
 	ogpImage: MicroCMSImage
 } & MicroCMSContentId &

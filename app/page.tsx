@@ -1,60 +1,91 @@
 export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
-import {
-	getAllPagePaths,
-	getParentPages,
-	type PageInfo,
-} from './_libs/microcms'
+import { client } from './_libs/microcms'
+import type { Page } from './_types'
 
 export default async function Home() {
-	const parentPages = await getParentPages()
-	const allPagePaths = await Promise.all(
-		parentPages.map(async parent => ({
-			id: parent.id,
-			title: parent.title,
-			children: await getAllPagePaths(parent.id),
-		})),
-	)
-	// console.log(JSON.stringify(allPagePaths, null, 2))
+	const allPagePaths = await generateAllPaths()
+	const tree = buildTree(allPagePaths)
 
 	return (
-		<div>
-			{allPagePaths.map(page => (
-				<PageLinks key={page.id} page={page} />
-			))}
+		<div className='container mx-auto my-8'>
+			<LinkList tree={tree} />
 		</div>
 	)
 }
 
-// 再帰的にページリンクを表示するコンポーネント
-function PageLinks({
-	page,
-	currentPath = '',
-	depth = 0,
-}: { page: PageInfo; currentPath?: string; depth?: number }) {
-	const pagePath = `${currentPath}/${page.id}`
+const generateAllPaths = async (
+	parentId?: string,
+	basePath: string[] = [],
+): Promise<{ slug: string[] }[]> => {
+	const { contents } = await client.getList<Page>({
+		endpoint: 'pages',
+		queries: {
+			filters: parentId ? `parent[equals]${parentId}` : 'parent[not_exists]',
+			fields: 'id,slug',
+		},
+	})
 
-	const indentClass =
-		['ml-0', 'ml-8', 'ml-16', 'ml-20', 'ml-28'][depth] || 'ml-24'
+	if (contents.length === 0) return []
 
+	const paths: { slug: string[] }[] = []
+
+	for (const page of contents) {
+		const currentPath = [...basePath, page.slug]
+		paths.push({ slug: currentPath })
+
+		const childPaths = await generateAllPaths(
+			page.id,
+			currentPath,
+		) /* 再帰呼び出し */
+		paths.push(...childPaths)
+	}
+
+	return paths
+}
+
+const buildTree = (routes: { slug: string[] }[]) => {
+	const tree: Record<string, any> = {}
+
+	for (const { slug } of routes) {
+		let current = tree
+		for (const part of slug) {
+			if (!current[part]) {
+				current[part] = {}
+			}
+			current = current[part]
+		}
+	}
+
+	return tree
+}
+
+// 再帰的にリンクリストをレンダリングするコンポーネント
+const LinkList: React.FC<{
+	tree: Record<string, any>
+	parentSlug?: string
+	depth?: number
+}> = ({ tree, parentSlug = '', depth = 0 }) => {
 	return (
-		<div className={indentClass}>
-			<div>
-				<Link href={pagePath} className='text-blue-500 hover:underline '>
-					{page.title}
-				</Link>
-			</div>
-			<div>
-				{page.children?.map(child => (
-					<PageLinks
-						key={child.id}
-						page={child}
-						currentPath={pagePath}
-						depth={depth + 1}
-					/>
-				))}
-			</div>
-		</div>
+		<ul>
+			{Object.keys(tree).map(key => {
+				const currentSlug = `${parentSlug}/${key}`.replace(/\/+/g, '/') // スラッシュを正規化
+				return (
+					<li key={key} className={`ml-${depth * 4} py-1`}>
+						<Link className='text-blue-500 hover:underline' href={currentSlug}>
+							{key}
+						</Link>
+						{Object.keys(tree[key]).length > 0 && (
+							<LinkList
+								tree={tree[key]}
+								parentSlug={currentSlug}
+								depth={depth + 1}
+							/>
+						)}
+					</li>
+				)
+			})}
+		</ul>
 	)
 }

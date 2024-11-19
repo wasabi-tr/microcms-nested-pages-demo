@@ -1,13 +1,13 @@
 import type { CustomField } from '@/app/_types'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import {
-	Card as CardWrapper,
 	CardContent,
 	CardFooter,
 	CardHeader,
+	Card as CardWrapper,
 } from '../ui/card'
-import Link from 'next/link'
 
 const Card = ({
 	image,
