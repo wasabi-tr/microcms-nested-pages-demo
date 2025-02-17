@@ -28,6 +28,7 @@ const ImageTextBlock = ({
 				</div>
 				<div className='w-full md:w-1/2 space-y-4'>
 					<h2 className='text-3xl font-bold tracking-tighter '>{heading}</h2>
+					<p>test</p>
 					<p className='text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed'>
 						{text}
 					</p>
