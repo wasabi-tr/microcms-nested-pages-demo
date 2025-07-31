@@ -3,7 +3,7 @@ import Card from './card'
 
 const GridCard = ({ cards }: Extract<CustomField, { fieldId: 'gridCard' }>) => {
 	return (
-		<div className='container mx-auto grid grid-cols-auto-fit-[300px] gap-6 '>
+		<div className='container mx-auto grid grid-cols-auto-fit-[300px] gap-6 max-w-[900px]'>
 			{cards.map((card, index) => (
 				<Card key={index} {...card} />
 			))}

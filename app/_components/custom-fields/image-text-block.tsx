@@ -10,7 +10,7 @@ const ImageTextBlock = ({
 	imageRight,
 }: Extract<CustomField, { fieldId: 'imageTextBlock' }>) => {
 	return (
-		<section className='container mx-auto py-8'>
+		<section className='container mx-auto py-8 max-w-[900px]'>
 			<div
 				className={cn(
 					'flex flex-col md:flex-row gap-8 md:gap-12',

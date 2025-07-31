@@ -9,7 +9,7 @@ export default async function Home() {
 	const tree = buildTree(allPagePaths)
 
 	return (
-		<div className='container mx-auto my-8'>
+		<div className='container mx-auto my-8 max-w-[900px]'>
 			<LinkList tree={tree} />
 		</div>
 	)

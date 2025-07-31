@@ -4,7 +4,7 @@ const RichEditor = ({
 	richEditor,
 }: Extract<CustomField, { fieldId: 'richEditor' }>) => {
 	return (
-		<div className='container mx-auto '>
+		<div className='container mx-auto max-w-[900px] '>
 			<div
 				className='prose max-w-none '
 				dangerouslySetInnerHTML={{
